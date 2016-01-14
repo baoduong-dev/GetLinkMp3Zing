@@ -1,0 +1,101 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+@{
+    AjaxOptions GetLinkOption = new AjaxOptions()
+    {
+        OnBegin = "ShowModal",
+        OnComplete = "CloseModal",
+        UpdateTargetId = "show-download",
+        OnFailure = "FailureMessage",
+        HttpMethod = "get"
+    };
+}
+
+<div class="jumbotron">
+    <h1>Download nhạc 320kbps mp3 zing</h1>
+    <p class="lead">Website giúp bạn có thể download được nhạc 320kbps của mp3 zing mà không cần có nick vip.</p>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        @using (Ajax.BeginForm("GetLink", "Home", null, GetLinkOption, new { @class = "form-horizontal", id="formget" }))
+        {
+            <div class="form-group">
+                <div class="col-md-12">
+                    <label for="">Chỉ cần copy link bài hát vào ô bên dưới:</label>
+                </div>
+                <div class="col-md-8">
+                    <input type="text" id="url" name="url" class="form-control" placeholder="Link bài hát" />
+                </div>
+                <div class="col-md-4">
+                    <input type="submit" id="download" class="btn btn-success" value="Download bài hát" />
+                </div>
+
+
+            </div>
+            <div class="form-group">
+                <div class="col-md-12">
+                    <p class="help-block"><strong>Ví dụ:</strong> http://mp3.zing.vn/bai-hat/Tam-Su-Voi-Nguoi-La-Tien-Cookie/ZW7O6UDW.html</p>
+                </div>
+            </div>
+        }
+        <div id="show-download">
+
+        </div>
+        @*<form class="form-horizontal">
+            
+        </form>*@
+    </div>
+</div>
+<div id="loader" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="progress">
+                    <div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                        <span class="sr-only">Đang tải bài hát, vui lòng đợi</span>
+                    </div>
+                </div>
+                <h4 class="text-center">Đang tải bài hát, vui lòng đợi</h4>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#download").click(function () {
+                //ShowModal();
+                //var id = $("#txtlink").val();
+                //id = id.substring(id.lastIndexOf("/") + 1, id.indexOf(".html"));
+                //console.log(id);
+                //getlink();
+            });
+
+        });
+
+        //function getlink() {
+        //    var id = $("#txtlink").val();
+        //    id = id.substring(id.lastIndexOf("/") + 1, id.indexOf(".html"));
+        //    var myurl = 'http://api.mp3.zing.vn/api/mobile/song/getsonginfo?requestdata={"id":"' + id + '"}';
+        //    $.getJSON(myurl + '&callback=?', function (data) {
+        //        //alert(data.song_id);
+        //        console.log(data);
+        //    });
+
+        //}
+
+        function ShowModal() {
+            $('#loader').modal('show');
+        }
+
+        function CloseModal() {
+            $('#loader').modal('hide');
+        }
+
+
+    </script>
+}
