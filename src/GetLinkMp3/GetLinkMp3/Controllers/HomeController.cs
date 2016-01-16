@@ -53,11 +53,18 @@ namespace GetLinkMp3.Controllers
 
                         JavaScriptSerializer js = new JavaScriptSerializer();
                         InfoMusic data = js.Deserialize<InfoMusic>(jsonResponse);// Deserialize Json
-
+                        //LinkDown dc = js.Deserialize<LinkDown>(data.link_download.ToString());
                         songname = data.title;
-                        //Object link = data.link_download;
+                        Dictionary<string, string> LocalGroup = data.source;
+                        foreach (var item in LocalGroup)
+                        {
+                            if (item.Key == "320")
+                            {
+                                linkdown = item.Value;
+                            }
+                        }
                         //string[] nameParts = link.ToString().Split(',');
-
+                        //object id1 = link.GetType().GetProperty("320").GetValue(link, null);
                         //string key = data.link_download.GetType().GetProperty(nameOfProperty).GetValue(link).ToString();
 
                         //linkdown = nameParts[2];
@@ -66,8 +73,8 @@ namespace GetLinkMp3.Controllers
                     }
                 }
                 ViewBag.name = songname;
-                //ViewBag.linkdown = linkdown;
-                return PartialView(); ;
+                ViewBag.linkdown = linkdown;
+                return PartialView();
             }
             catch (WebException ex)
             {
