@@ -19,7 +19,7 @@ namespace GetLinkMp3
             //bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
             //            "~/Scripts/modernizr-*"));
 
-            bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
+            bundles.Add(new ScriptBundle("~/bundles/materialize").Include(
                       "~/Scripts/materialize.js",
                       "~/Scripts/Init.js"));
 

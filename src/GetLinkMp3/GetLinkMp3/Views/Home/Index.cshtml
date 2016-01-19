@@ -1,20 +1,22 @@
 ﻿@{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "Get Link Download 320kbps Mp3 Zing";
+    ViewBag.Description = "Get link download album, bài hát, video chất lượng 320kbps từ zing mp3 - 2016";
+    ViewBag.Image = Request.Url.AbsoluteUri + "Content/images/get-link-320-mp3-zing.png";
 }
 @{
     AjaxOptions GetLinkOption = new AjaxOptions()
-    {
-        OnBegin = "ShowModal",
-        OnComplete = "CloseModal",
-        UpdateTargetId = "show-download",
-        OnFailure = "FailureMessage",
-        HttpMethod = "get"
-    };
+            {
+                OnBegin = "ShowModal",
+                OnComplete = "CloseModal",
+                UpdateTargetId = "show-download",
+                OnFailure = "FailureMessage",
+                HttpMethod = "get"
+            };
 }
 <div class="section no-pad-bot" id="index-banner">
     <div class="container">
         <br><br>
-        <h1 class="header center orange-text">Download nhạc 320kbps mp3 zing</h1>
+        <h1 class="header center pink-text accent-3">Download nhạc 320kbps Mp3 Zing</h1>
         <div class="row center">
             <h5 class="header col s12 light">Website giúp bạn có thể download được nhạc 320kbps của mp3 zing mà không cần có nick vip.</h5>
             <h5 class="header col s12 light">Lưu ý: Nên cài đặt IDM trước khi tải nhạc.</h5>
@@ -53,6 +55,14 @@
 
                             </div>
                         </div>
+                        <div class="row">
+                            <h5 class="center">Nếu trình duyệt không tự động download bài hát, thì làm theo hướng dẫn như hình bên dưới:</h5>
+                            <img src="~/Content/images/fix_download_mp3.png" alt="Fix download mp3" />
+                            <br /><br />
+                        </div>
+                        <div class="row">
+                            <div class="fb-comments" data-href="http://tainhac.devbrigde.com/" data-numposts="10" data-width="100%" data-order-by="reverse_time"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -60,13 +70,34 @@
     </div>
     <br><br>
 </div>
-
 <div id="loader" class="modal">
     <div class="modal-content">
         <h5 class="center">Đang tải! Vui lòng đợi...</h5>
         <div class="progress">
             <div class="indeterminate"></div>
         </div>
+    </div>
+</div>
+
+<div id="errorModal" class="modal">
+    <div class="modal-content">
+        <h4>Thông báo</h4>
+        <p>Có lỗi xảy ra! Bạn hãy kiểm tra lại URL hoặc thử lại sau!</p>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Đóng</a>
+    </div>
+</div>
+
+<div id="contactmodal" class="modal">
+    <div class="modal-content">
+        <h4>Thông tin</h4>
+        <p>Plugin đang trong quá trình phát triển! Nếu có lỗi vui lòng góp ý và đóng góp vào comment bên dưới!</p>
+        <p>Hoặc Facebook: https://www.facebook.com/thuanbao1509</p>
+        <p>Xin cảm ơn!</p>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Đóng</a>
     </div>
 </div>
 @*<div id="loader" class="modal fade" role="dialog">
@@ -87,9 +118,15 @@
     <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
     <script>
         $(document).ready(function () {
-            if ($()) {
-
-            }
+            $('form').on('paste', function () {
+                setTimeout(function () {
+                    $("#formget").submit();
+                }, 10);
+            });
+            $('.contact').click(function () {
+                ShowContact();
+                return false;
+            });
         });
 
         //function getlink() {
@@ -112,7 +149,12 @@
         function CloseModal() {
             $('#loader').closeModal();
         }
-
+        function FailureMessage() {
+            $('#errorModal').openModal();
+        }
+        function ShowContact() {
+            $('#contactmodal').openModal();
+        }
 
     </script>
 }
