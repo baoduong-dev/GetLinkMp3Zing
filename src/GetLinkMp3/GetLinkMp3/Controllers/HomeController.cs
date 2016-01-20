@@ -42,14 +42,14 @@ namespace GetLinkMp3.Controllers
             string artist = "";
             string linkdown320 = "";
             string linkdownloss = "";
-            string linkxml = ReadHtml(url);
+            string imagessong = ReadHtml(url).backimage;
             var url1 = url.LastIndexOf("/");
             var url2 = url.IndexOf(".html");
             var id = url.Substring(url1 + 1, url2 - url1 - 1);
             var httpWebRequest = (HttpWebRequest)WebRequest.Create("http://api.mp3.zing.vn/api/mobile/song/getsonginfo?requestdata={\"id\":\"" + id + "\"}");
             httpWebRequest.ContentType = "application/json";
             httpWebRequest.Method = "GET";
-            string text = "";
+            //string text = "";
             try
             {
                 //Google recaptcha Responce
@@ -89,6 +89,7 @@ namespace GetLinkMp3.Controllers
                 ViewBag.artist = artist;
                 ViewBag.linkdown320 = linkdown320;
                 ViewBag.linkdownloss = linkdownloss;
+                ViewBag.imagessong = imagessong;
                 return PartialView();
             }
             catch (WebException ex)
@@ -97,7 +98,7 @@ namespace GetLinkMp3.Controllers
             }
         }
 
-        protected string ReadHtml(string link)
+        protected Song ReadHtml(string link)
         {
             string result = "";
 
@@ -108,9 +109,7 @@ namespace GetLinkMp3.Controllers
             StreamReader reader = new StreamReader(gzstream);
             sContents = reader.ReadToEnd();
             //return sContents;
-
-            
-                Match m = Regex.Match(sContents, @"xmlURL=\s*(.+?)\s*&amp;textad=");
+            Match m = Regex.Match(sContents, @"xmlURL=\s*(.+?)\s*&amp;textad=");
             if (m.Success)
             {
                 result = m.Groups[1].Value;
@@ -120,27 +119,33 @@ namespace GetLinkMp3.Controllers
                 result = "";
             }
 
-            
-            //string sContentsXML = string.Empty;
-            //HttpWebRequest requestXML = (HttpWebRequest)WebRequest.Create(result);
-            //HttpWebResponse responseXML = (HttpWebResponse)requestXML.GetResponse();
-            //GZipStream gzstreamXML = new GZipStream(responseXML.GetResponseStream(), CompressionMode.Decompress);
-            //StreamReader readerXML = new StreamReader(gzstreamXML);
+
+            string sContentsXML = string.Empty;
+            HttpWebRequest requestXML = (HttpWebRequest)WebRequest.Create(result);
+            HttpWebResponse responseXML = (HttpWebResponse)requestXML.GetResponse();
+            GZipStream gzstreamXML = new GZipStream(responseXML.GetResponseStream(), CompressionMode.Decompress);
+            //using (XmlReader xmlReader = XmlReader.Create(gzstreamXML, new XmlReaderSettings() { ConformanceLevel = ConformanceLevel.Fragment }))
+            //{
+            //    xmlReader.MoveToContent();
+            //    XmlDocument xmlDocument = new XmlDocument();
+            //    xmlDocument.LoadXml(xmlReader.ReadContentAsString());
+            //}
+            StreamReader readerXML = new StreamReader(gzstreamXML);
             //sContentsXML = readerXML.ReadToEnd();
 
-            //DataSet ds = new DataSet();//Using dataset to read xml file  
-            //ds.ReadXml(sContentsXML);
-            //var song = new Song();
-            //song = (from rows in ds.Tables[0].AsEnumerable()
-            //        select new Song
-            //        {
-            //            title = rows[0].ToString(),
-            //            backimage = rows[9].ToString()
-            //        }).SingleOrDefault();
+            DataSet ds = new DataSet();//Using dataset to read xml file
+            ds.ReadXml(readerXML);
+            var song = new Song();
+            song = (from rows in ds.Tables[1].AsEnumerable()
+                    select new Song
+                    {
+                        title = rows[0].ToString(),
+                        backimage = rows[9].ToString()
+                    }).SingleOrDefault();
 
-            return result;
+            return song;
         }
 
-        
+
     }
 }
